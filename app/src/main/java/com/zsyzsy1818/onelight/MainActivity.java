@@ -18,9 +18,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-//    private ToggleButton toggleButton;
     private ImageButton imageButton;
     private boolean flash;
 
@@ -32,24 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        if (manager == null) {
-//            manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-//        }
-////        toggleButton = findViewById(R.id.toggleButton);
-////        toggleButton.setOnCheckedChangeListener(this);
-//        imageButton = findViewById(R.id.imageButton);
-//        imageButton.setOnClickListener(this);
-//
-//        imageButton.setImageResource(R.drawable.light_on);
-//        openFlash();
-//        flash=true;
-        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, "0");
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, "info.componentName");
-// This is the options bundle discussed above
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_OPTIONS, "options");
-        startActivityForResult(intent, 0);
-
     }
 
     @Override
@@ -58,11 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (manager == null) {
             manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         }
-//        toggleButton = findViewById(R.id.toggleButton);
-//        toggleButton.setOnCheckedChangeListener(this);
         imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(this);
-
         imageButton.setImageResource(R.drawable.light_on);
         openFlash();
         flash=true;
@@ -73,14 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.imageButton:
                 //关
-                if (flash == true) {
+                if (flash) {
                     imageButton.setImageResource(R.drawable.light_off);
                     closeFlash();
                     flash = false;
                     Toast.makeText(this, "大可爱鹿宝贝", Toast.LENGTH_SHORT).show();
                 }
                 //开
-                else if (flash == false) {
+                else {
                     imageButton.setImageResource(R.drawable.light_on);
                     openFlash();
                     flash = true;
@@ -90,21 +68,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if (b==true){
-            openFlash();
+//    @Override
+//    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//        if (b==true){
+//            openFlash();
+////            compoundButton.setButtonDrawable(R.drawable.light_on);
 //            compoundButton.setButtonDrawable(R.drawable.light_on);
-            compoundButton.setButtonDrawable(R.drawable.light_on);
-            Toast.makeText(this, "大可爱鹿宝贝", Toast.LENGTH_SHORT).show();
-        } else if (b == false) {
-            closeFlash();
+//            Toast.makeText(this, "大可爱鹿宝贝", Toast.LENGTH_SHORT).show();
+//        } else if (b == false) {
+//            closeFlash();
+////            compoundButton.setButtonDrawable(R.drawable.light_off);
 //            compoundButton.setButtonDrawable(R.drawable.light_off);
-            compoundButton.setButtonDrawable(R.drawable.light_off);
-            Toast.makeText(this, "小可爱兔宝贝", Toast.LENGTH_SHORT).show();
-        }
-
-    }
+//            Toast.makeText(this, "小可爱兔宝贝", Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
 
 
     private void openFlash() {

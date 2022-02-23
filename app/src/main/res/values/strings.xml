@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">小可爱兔宝贝</string>
+    <string name="app_name">兔宝贝手电</string>
     <string name="open">开</string>
     <string name="close">关</string>
-    <string name="togglebutton">ToggleButton</string>
 </resources>
