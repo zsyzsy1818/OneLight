@@ -138,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        //todo 增加一个switch按钮，用于选择当app返回桌面时是否关闭手电筒
+        closeFlash();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (manager != null && torchCallback != null) {
