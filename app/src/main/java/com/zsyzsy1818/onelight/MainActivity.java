@@ -2,22 +2,17 @@ package com.zsyzsy1818.onelight;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Camera;
 import android.hardware.camera2.CameraManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
+/**
+ * Created by  小可爱兔宝贝 on 2022/2/24
+ * Mail:   zhaoshiyu900310@163.com
+ * Description:
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton imageButton;
@@ -25,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private CameraManager manager;
-    private android.hardware.Camera camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(this);
-        imageButton.setImageResource(R.drawable.light_on);
-        openFlash();
-        flash=true;
+        imageButton.setImageResource(R.drawable.light_off);
+        flash = true;
     }
 
     @Override
@@ -51,104 +44,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.imageButton:
                 //关
-                if (flash) {
+                if (!flash) {
                     imageButton.setImageResource(R.drawable.light_off);
-                    closeFlash();
-                    flash = false;
+
+                    FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
+                    flash = true;
                     Toast.makeText(this, "大可爱鹿宝贝", Toast.LENGTH_SHORT).show();
                 }
                 //开
                 else {
                     imageButton.setImageResource(R.drawable.light_on);
-                    openFlash();
-                    flash = true;
+                    FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
+                    flash = false;
                     Toast.makeText(this, "小可爱兔宝贝", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
 
-//    @Override
-//    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//        if (b==true){
-//            openFlash();
-////            compoundButton.setButtonDrawable(R.drawable.light_on);
-//            compoundButton.setButtonDrawable(R.drawable.light_on);
-//            Toast.makeText(this, "大可爱鹿宝贝", Toast.LENGTH_SHORT).show();
-//        } else if (b == false) {
-//            closeFlash();
-////            compoundButton.setButtonDrawable(R.drawable.light_off);
-//            compoundButton.setButtonDrawable(R.drawable.light_off);
-//            Toast.makeText(this, "小可爱兔宝贝", Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
 
-
-    private void openFlash() {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (manager != null) {
-                    manager.setTorchMode("0", true);
-                }
-            } else {
-//                camera = android.hardware.Camera.open();
-//                android.hardware.Camera parameters=camera.getParameters();
-//                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-//                camera.setParameters(parameters);
-//                camera.startPreview();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void closeFlash() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                if (manager == null) {
-                    return;
-                }
-                manager.setTorchMode("0", false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (camera == null) {
-                return;
-            }
-            camera.stopPreview();
-            camera.release();
-        }
-    }
-
-    private CameraManager.TorchCallback torchCallback = new CameraManager.TorchCallback() {
-        @Override
-        public void onTorchModeChanged(String cameraId, boolean enabled) {
-            super.onTorchModeChanged(cameraId, enabled);
-            manager.unregisterTorchCallback(torchCallback);
-            if (!enabled) {
-                //手电筒状态关闭，执行开启
-                openFlash();
-            } else {
-                //手电筒状态开启，执行关闭
-                closeFlash();
-            }
-        }
-    };
 
     @Override
     protected void onStop() {
         super.onStop();
         //todo 增加一个switch按钮，用于选择当app返回桌面时是否关闭手电筒
-        closeFlash();
+//        closeFlash();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (manager != null && torchCallback != null) {
-            manager.unregisterTorchCallback(torchCallback);
-        }
+//        if (manager != null && torchCallback != null) {
+//            manager.unregisterTorchCallback(torchCallback);
+//        }
     }
 }

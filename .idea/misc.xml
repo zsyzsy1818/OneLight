@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/example_appwidget.xml" value="0.175" />
+        <entry key="app/src/main/res/layout/new_app_widget.xml" value="0.17604166666666668" />
         <entry key="app/src/main/res/xml/example_appwidget_info.xml" value="0.175" />
       </map>
     </option>

@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.OneLight.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.OneLight.AppWidgetContainer">
+
+
+
+    <Button
+        android:id="@+id/widget_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+    </Button>
+    <TextView
+        android:layout_below="@id/widget_button"
+        android:id="@+id/widget_text"
+        style="@style/Widget.OneLight.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/appwidget_text"
+        android:text="@string/appwidget_text"
+        android:textSize="11sp"
+        android:textStyle="bold|italic" />
+</RelativeLayout>
