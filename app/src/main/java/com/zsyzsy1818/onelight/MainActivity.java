@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean flash;
 
 
-    private CameraManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (manager == null) {
-            manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        }
         imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(this);
         imageButton.setImageResource(R.drawable.light_off);

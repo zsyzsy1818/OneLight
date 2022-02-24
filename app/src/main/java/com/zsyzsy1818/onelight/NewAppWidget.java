@@ -31,13 +31,9 @@ public class NewAppWidget extends AppWidgetProvider {
     static int num = 0;
     static String tag_action = "Widget.Button.Click";
 
-    static private CameraManager cameraManager;
    static RemoteViews views;
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        if (cameraManager == null) {
-            cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-        }
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
@@ -66,31 +62,6 @@ public class NewAppWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-   static private CameraManager.TorchCallback torchCallback = new CameraManager.TorchCallback() {
-        @Override
-        public void onTorchModeChanged( String cameraId, boolean enabled) {
-            super.onTorchModeChanged(cameraId, enabled);
-            cameraManager.unregisterTorchCallback(torchCallback);
-            if(!enabled){
-                //手电筒状态关闭，执行开启
-//                openFlash();
-                try {
-                    cameraManager.setTorchMode("0",true);
-
-                } catch (CameraAccessException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                //手电筒状态开启，执行关闭
-//                closeFlash();
-                try {
-                    cameraManager.setTorchMode("0",false);
-                } catch (CameraAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
     public static class MyService extends Service {
 
         @Override
@@ -102,7 +73,8 @@ public class NewAppWidget extends AppWidgetProvider {
             //点击按钮时
             if (intent.getAction() != null) {
                 if (intent.getAction().equals(tag_action)) {
-                        cameraManager.registerTorchCallback(torchCallback,null);
+
+                    FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
                 }
             }
             remoteViews.setTextViewText(R.id.widget_text, String.valueOf(num));
