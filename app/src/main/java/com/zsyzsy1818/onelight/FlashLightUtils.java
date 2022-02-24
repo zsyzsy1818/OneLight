@@ -62,7 +62,13 @@ public class FlashLightUtils {
 
 
     }
+    public void flashLightDisabled() {
+        if (manager != null && torchCallback != null) {
+            manager.unregisterTorchCallback(torchCallback);
+        }
 
+
+    }
     private static void openFlash() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

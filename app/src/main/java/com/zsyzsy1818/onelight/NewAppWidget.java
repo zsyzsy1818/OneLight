@@ -60,6 +60,7 @@ public class NewAppWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+        FlashLightUtils.getInstance().flashLightDisabled();
     }
 
     public static class MyService extends Service {
@@ -73,11 +74,12 @@ public class NewAppWidget extends AppWidgetProvider {
             //点击按钮时
             if (intent.getAction() != null) {
                 if (intent.getAction().equals(tag_action)) {
-
                     FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
+
+                    remoteViews.setImageViewResource(R.id.imageButton,R.drawable.dakeai);
+                    manager.updateAppWidget(thisWidget, remoteViews);
                 }
             }
-            remoteViews.setTextViewText(R.id.widget_text, String.valueOf(num));
             //定义一个Intent来发送按钮Action
             Intent intent1 = new Intent();
             intent1.setAction(tag_action);
