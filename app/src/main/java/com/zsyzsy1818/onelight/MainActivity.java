@@ -1,10 +1,15 @@
 package com.zsyzsy1818.onelight;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.camera2.CameraManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -18,12 +23,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton imageButton;
     private boolean flash;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M) public void requestIgnoreBatteryOptimizations () {
+        try {
+            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestIgnoreBatteryOptimizations();
     }
 
     @Override

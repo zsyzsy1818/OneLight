@@ -104,6 +104,9 @@ public class NewAppWidget extends AppWidgetProvider {
         @Override
         public void onDestroy() {
             num=0;
+            Log.d("TAG", "MyService被销毁了: ");
+            Intent service = new Intent(this, MyService.class);
+            this.startService(service);
             super.onDestroy();
         }
     }
