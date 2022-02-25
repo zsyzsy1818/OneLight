@@ -13,9 +13,11 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 
 import java.util.Objects;
 
@@ -31,12 +33,11 @@ public class NewAppWidget extends AppWidgetProvider {
     static int num = 0;
     static String tag_action = "Widget.Button.Click";
 
-   static RemoteViews views;
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
-        views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+        RemoteViews   views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
 
         Intent intent = new Intent(context, MyService.class);
         context.startService(intent);
@@ -75,9 +76,12 @@ public class NewAppWidget extends AppWidgetProvider {
             if (intent.getAction() != null) {
                 if (intent.getAction().equals(tag_action)) {
                     FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
-
-                    remoteViews.setImageViewResource(R.id.imageButton,R.drawable.dakeai);
-                    manager.updateAppWidget(thisWidget, remoteViews);
+                    Log.d("TAG", "点击了appwidget: imageButton");
+                    if (num % 2 == 1) {
+                        remoteViews.setImageViewResource(R.id.widget_button,R.drawable.xiaokeai);
+                    }else
+                    remoteViews.setImageViewResource(R.id.widget_button,R.drawable.dakeai);
+                    num++;
                 }
             }
             //定义一个Intent来发送按钮Action
@@ -95,6 +99,12 @@ public class NewAppWidget extends AppWidgetProvider {
         @Override
         public IBinder onBind(Intent intent) {
             return null;
+        }
+
+        @Override
+        public void onDestroy() {
+            num=0;
+            super.onDestroy();
         }
     }
 
