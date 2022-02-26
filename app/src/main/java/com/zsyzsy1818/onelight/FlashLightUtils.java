@@ -18,6 +18,7 @@ public class FlashLightUtils {
     private static final String TAG = FlashLightUtils.class.getSimpleName();
     private static CameraManager manager;
     private static android.hardware.Camera camera;
+//    public static String FlashLightStatus = "";
 
     @SuppressLint("StaticFieldLeak")
     private FlashLightUtils() {
@@ -41,39 +42,34 @@ public class FlashLightUtils {
         public void onTorchModeChanged(String cameraId, boolean enabled) {
             super.onTorchModeChanged(cameraId, enabled);
             manager.unregisterTorchCallback(torchCallback);
-            if (!enabled) {
-                //手电筒状态关闭，执行开启
-                openFlash();
-                Log.d(TAG, "手电开: ");
-            } else {
-                //手电筒状态开启，执行关闭
-                closeFlash();
-                Log.d(TAG, "手电关: ");
-            }
+            Val.FlashLightStatus=enabled;
+            Log.e(TAG, "手电状态为: " + Val.FlashLightStatus);
         }
     };
 
-    public void flashLightChange(Context context) {
+    public static void flashLightStatus(Context context) {
         if (manager == null) {
             manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         }
-
         manager.registerTorchCallback(torchCallback, null);
 
 
     }
-    public void flashLightDisabled() {
+
+    public static void flashLightDisabled() {
         if (manager != null && torchCallback != null) {
             manager.unregisterTorchCallback(torchCallback);
         }
 
 
     }
-    private static void openFlash() {
+
+    public static void openFlash() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (manager != null) {
                     manager.setTorchMode("0", true);
+                    Val.FlashLightStatus = true;
                 }
             } else {
                 camera = android.hardware.Camera.open();
@@ -81,19 +77,21 @@ public class FlashLightUtils {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                 camera.setParameters(parameters);
                 camera.startPreview();
+                Val.FlashLightStatus = true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void closeFlash() {
+    public static void closeFlash() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 if (manager == null) {
                     return;
                 }
                 manager.setTorchMode("0", false);
+                Val.FlashLightStatus = false;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -103,6 +101,8 @@ public class FlashLightUtils {
             }
             camera.stopPreview();
             camera.release();
+            Val.FlashLightStatus = false;
         }
     }
+
 }

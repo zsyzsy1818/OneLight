@@ -1,15 +1,9 @@
 package com.zsyzsy1818.onelight;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.hardware.camera2.CameraManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -23,21 +17,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton imageButton;
     private boolean flash;
 
-    @RequiresApi(api = Build.VERSION_CODES.M) public void requestIgnoreBatteryOptimizations () {
-        try {
-            Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-            intent.setData(Uri.parse("package:" + getPackageName()));
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        requestIgnoreBatteryOptimizations();
+        FlashLightUtils.flashLightStatus(this);
     }
 
     @Override
@@ -45,8 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         imageButton = findViewById(R.id.imageButton);
         imageButton.setOnClickListener(this);
-        imageButton.setImageResource(R.drawable.light_off);
-        flash = true;
+
+
+
+
+        Log.e("TAG", " "+ Val.FlashLightStatus);
+        imageButton.setImageResource(R.drawable.light_on);
+        FlashLightUtils.openFlash();
+        Log.e("TAG", " "+ Val.FlashLightStatus);
+
     }
 
     @Override
@@ -54,19 +46,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.imageButton:
                 //关
-                if (!flash) {
+                if (Val.FlashLightStatus) {
                     imageButton.setImageResource(R.drawable.light_off);
 
-                    FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
-                    flash = true;
-                    Toast.makeText(this, "大可爱鹿宝贝", Toast.LENGTH_SHORT).show();
+                    FlashLightUtils.closeFlash();
+                    Toast.makeText(this, "手电筒已关闭", Toast.LENGTH_SHORT).show();
+                    Log.e("TAG", " "+ Val.FlashLightStatus);
                 }
                 //开
                 else {
                     imageButton.setImageResource(R.drawable.light_on);
-                    FlashLightUtils.getInstance().flashLightChange(MyApplication.context);
-                    flash = false;
-                    Toast.makeText(this, "小可爱兔宝贝", Toast.LENGTH_SHORT).show();
+                    FlashLightUtils.openFlash();
+                    Toast.makeText(this, "手电筒已打开", Toast.LENGTH_SHORT).show();
+                    Log.e("TAG", " "+ Val.FlashLightStatus);
                 }
                 break;
         }
@@ -78,14 +70,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         //todo 增加一个switch按钮，用于选择当app返回桌面时是否关闭手电筒
+
 //        closeFlash();
     }
 
     @Override
     protected void onDestroy() {
+        FlashLightUtils.flashLightDisabled();
         super.onDestroy();
-//        if (manager != null && torchCallback != null) {
-//            manager.unregisterTorchCallback(torchCallback);
-//        }
     }
 }
