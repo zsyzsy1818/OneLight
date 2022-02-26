@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.imageButton:
                 //关
+//                FlashLightUtils.init();
                 if (FlashLightUtils.getFlashLightStatus()) {
                     imageButton.setImageResource(R.drawable.light_off);
                     FlashLightUtils.closeFlash();

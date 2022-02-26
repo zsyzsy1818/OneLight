@@ -69,6 +69,7 @@ public class FlashLightUtils {
                 if (manager != null) {
                     manager.setTorchMode("0", true);
                     setFlashLightStatus(true);
+                    init();
                 }
             } else {
                 camera = android.hardware.Camera.open();
@@ -77,6 +78,7 @@ public class FlashLightUtils {
                 camera.setParameters(parameters);
                 camera.startPreview();
                 setFlashLightStatus(true);
+                init();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,6 +96,7 @@ public class FlashLightUtils {
                 }
                 manager.setTorchMode("0", false);
                 setFlashLightStatus(false);
+                init();
 //                manager=null;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -105,6 +108,7 @@ public class FlashLightUtils {
             camera.stopPreview();
             camera.release();
             setFlashLightStatus(false);
+            init();
 //            camera=null;
         }
     }
