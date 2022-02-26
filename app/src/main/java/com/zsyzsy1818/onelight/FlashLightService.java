@@ -36,13 +36,15 @@ public class FlashLightService extends Service {
         //点击按钮时
         if (intent.getAction() != null) {
             if (intent.getAction().equals(tag_action)) {
-//                FlashLightUtils.getInstance().flashLightStatus(MyApplication.context);
-                Log.d("TAG", "点击了appwidget: imageButton");
-                if (num % 2 == 1) {
-                    remoteViews.setImageViewResource(R.id.widget_button,R.drawable.xiaokeai);
-                }else
-                    remoteViews.setImageViewResource(R.id.widget_button,R.drawable.dakeai);
-                num++;
+
+                if (FlashLightUtils.getFlashLightStatus()) {
+                    FlashLightUtils.closeFlash();
+                    remoteViews.setImageViewResource(R.id.widget_button, R.drawable.xiaokeai);
+                } else {
+                    FlashLightUtils.openFlash();
+                    remoteViews.setImageViewResource(R.id.widget_button, R.drawable.dakeai);
+
+                }
             }
         }
         //定义一个Intent来发送按钮Action
