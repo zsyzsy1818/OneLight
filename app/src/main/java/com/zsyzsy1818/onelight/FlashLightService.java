@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
  * Description:
  */
 public class FlashLightService extends Service {
-    static int num = 0;
     static String tag_action = "Widget.Button.Click";
 
     @Nullable
@@ -60,7 +59,6 @@ public class FlashLightService extends Service {
 
     @Override
     public void onDestroy() {
-        num=0;
         Log.d("TAG", "MyService被销毁了: ");
         Intent service = new Intent(this, FlashLightService.class);
         this.startService(service);
